@@ -1,0 +1,123 @@
+<html lang="en" ng-app="WeatherApp">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body ng-controller="WeatherControl as weather" style="background-color: slategray" ng-cloak layout='column' layout-align='center center'>
+  <md-card class='main-card md-whiteframe-z2' ng-cloak >
+    <div class='ic' ng-show='hide'>
+      <md-card-title> <md-card-title-text>
+      <span class="md-headline">{{ loc.city }},  {{loc.country}}
+      </span>
+        <div layout='row' layout-align='space-between center'>
+          <div class="md-body-1">{{loc.road}}, {{loc.suburb}}, {{loc.state}}, {{loc.postcode}}<br/>{{weather.currently.time * 1000 | date: 'EEEE,   hh:mm a'}}</div>
+          <md-radio-group ng-model="unit" style='padding: 8px 16px 0 0; display: inline-flex
+                                                 '>
+            <md-radio-button value="C" class="md-primary" style='margin-right: 16px;'  16px>°C</md-radio-button>
+            <md-radio-button value="F" class="md-primary"  > °F </md-radio-button>
+          </md-radio-group>
+        </div>
+      </md-card-title-text>
+    </md-card-title>
+      <md-card-content >
+      <div class="md-media-md card-media" layout='column' layout-align='center center' ><div class='md-subhead'>{{weather.currently.summary}}</div><img src="{{icons[weather.currently.icon]}}" height=128 width=128 title='{{weather.currently.summary}}'/></div>
+      <span class='temp'>{{weather.currently.apparentTemperature | temp: unit }}</span>
+      <span><a>°{{unit}}</a></span>
+      <div class='md-body-1 details'>
+        Humidity: {{weather.currently.humidity*100 | number: 0}}%<br/>
+        Precipitation: {{weather.currently.precipProbability*100 | number: 0 }}% <br/>
+        Wind: {{weather.currently.windSpeed}} mph<br/>
+      </div>
+    </md-card-content>
+      <md-divider style='margin: 16px 0'></md-divider>
+      <div class='md-caption'><b>Forecast this Week:</b> {{weather.daily.summary}}</div>
+      <md-card-actions class="forecast" layout="row" layout-align="space-around">
+      <div class='fd' ng-repeat="t in weather.daily.data | limitTo: 7">
+        <span>{{t.time * 1000 | date: 'EEE'}}</span>
+        <img src='{{icons[t.icon]}}'  title='{{t.summary}}'/>
+        <div class='md-caption'>{{t.temperatureMax | temp: unit | number: 0  }} | {{t.temperatureMin | temp: unit | number: 0  }}</div>
+      </div>
+    </md-card-actions>
+    </div>
+    <div class='bc' ng-hide='hide'>
+      <div class='md-headline' style='padding: 16px; text-align: center'>What's the Weather ?</div>
+      <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+    </div>
+  <!--<md-content>
+    Icons used from Google's weather card<br/>
+    OpenStreetmap<br/>
+    Forecast.io<br/>
+  </md-content>-->
+  </md-card>
+  <!--Scripts-->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+  <script type='text/javascript'>
+    var app = angular.module('WeatherApp', ['ngMaterial']);
+    app.controller('WeatherControl', function($scope, $http) {
+    $scope.icons = { 
+    'clear-day': 'https://ssl.gstatic.com/onebox/weather/128/sunny.png', 
+    'clear-night': 'https://ssl.gstatic.com/onebox/weather/128/sunny.png', 
+    'rain': 'https://ssl.gstatic.com/onebox/weather/128/rain_light.png', 
+    'snow': 'https://ssl.gstatic.com/onebox/weather/128/snow.png',
+    'wind': 'https://ssl.gstatic.com/onebox/weather/128/windy.png', 
+    'fog': 'https://ssl.gstatic.com/onebox/weather/128/fog.png', 
+    'cloudy': 'https://ssl.gstatic.com/onebox/weather/128/partly_cloudy.png', 
+    'partly-cloudy-day': 'https://ssl.gstatic.com/onebox/weather/128/partly_cloudy.png', 
+    'partly-cloudy-night': 'https://ssl.gstatic.com/onebox/weather/128/partly_cloudy.png',
+    'hail': '', 
+    'thunderstorm': 'https://ssl.gstatic.com/onebox/weather/128/thunderstorms.png'};
+    $scope.unit = 'C';
+    $scope.hide = false;
+    $scope.lat = '';
+    $scope.long = '';
+    $scope.weather = [];
+    $scope.loc = [];
+    $scope.forecast = {};
+    $scope.getPos = function(pos) {
+    $scope.lat = Math.round(pos.coords.latitude * 1000) / 1000;
+    $scope.long = Math.round(pos.coords.longitude * 1000) / 1000;
+    $scope.getData();
+    };
+    $scope.getLocName = function() {
+     $http({
+       method: 'GET',
+       url: 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + $scope.lat + '&lon=' + $scope.long + '&zoom=18&addressdetails=1'
+     }).then(function successCallback(response) {
+       $scope.loc = response.data.address;
+       $scope.hide = true;
+     }, function errorCallback(response) {
+     });
+    };
+  $scope.getData = function() {
+    this.url = 'https://api.darksky.net/forecast/f51a4bcafaed4fccdfec1827839ce09a/' + $scope.lat + ',' + $scope.long + '?callback=JSON_CALLBACK';
+    $http.jsonp(this.url).success(function(data) {
+      $scope.weather = data;
+      $scope.getLocName();
+    });
+  };
+  
+    navigator.geolocation.getCurrentPosition($scope.getPos);
+  });
+    app.filter('temp', function() {
+      return function (t, unit) {
+        if(unit == 'C') {
+          return Math.round((t - 32) * 0.5556 * 100) / 100;
+        }
+        else if(unit == 'F') {
+          return t;
+        }
+      };
+    });
+  </script>
+
+</body>
+
+</html>
