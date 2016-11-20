@@ -1,0 +1,434 @@
+<html lang="en" ng-app="Simon">
+<head>
+<title>Simon Game</title>
+<style type='text/css'>
+Skip to content
+ 
+ 
+Search…
+All gists
+GitHub
+New gist @mukilane
+ Edit
+  Delete
+  Star 0
+  @mukilanemukilane/index.html
+Created just now
+Embed  
+<script src="https://gist.github.com/mukilane/bfe752383eda102583bbd45491d17f0a.js"></script>
+  Download ZIP
+ Code  Revisions 1
+Simon Game
+Raw
+ index.html
+<html lang="en" ng-app="Simon">
+<body ng-cloak ng-controller='gameCtrl'>
+  <div class='overlay' ng-hide='hide'>
+    <md-content>
+      <h2 class='md-display-1'>{{ message }}</h2>
+      <md-button ng-click='showOverlay=false; start();'>
+        START
+      </md-button>
+    </md-content>
+  </div>
+  <div class='wrap md-whiteframe-z3'>
+    <div class='control' ng-style='Alert'>
+      <div class='logo' style='font-weight: bolder; font-size: 24px; font-family: Monospace;'>SIMON </div>
+      <div class='cont-box'>
+        <md-checkbox ng-model="strict" aria-label="Strict" style='margin: 0px;'>           <span class='md-caption'>Strict</span>
+          </md-checkbox>
+        
+        <div class='counter'>
+          <md-chips>
+            <md-chip>
+            {{ count }}
+            </md-chip>
+          </md-chips>
+        </div>
+      </div>
+      <md-button class='md-raised md-fab md-mini' ng-click='start()' md-colors="{background: 'grey-A700'}"><i class='material-icons' style='vertical-align: -6px;'>refresh</i></md-button>
+    </div>
+    <div class='cont' >
+      <div class='g' ng-click="put('g')" ng-class='stat'>
+      </div>
+      <div class='r' ng-click="put('r')" ng-class='stat'>
+      </div>
+      <div class='y' ng-click="put('y')" ng-class='stat'>
+      </div>
+      <div class='b' ng-click="put('b')" ng-class='stat'>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+Raw
+ script.js
+var app = angular.module('Simon', ['ngMaterial']);
+
+app.controller('gameCtrl', function($scope, $timeout) {
+  $scope.colors = ["g", "r", "b", "y"];
+  var audio1 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3');
+  audio1.load();
+  var audio2 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3');
+  audio2.load();
+  var audio3 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3');
+  audio3.load();
+  var audio4 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
+  audio4.load();
+  $scope.sequence = "";
+  $scope.seq = "";
+  $scope.turn = true;
+  $scope.strict = false;
+  $scope.count = 0;
+  $scope.stat = '';
+  $scope.putCount = 0;
+  $scope.flag = false;
+  $scope.message = "Let's start a new game";
+  var sc = 0;
+  
+  $scope.won = function() {
+    $scope.message = "You've Won!\n Let's start a new game!"
+    $scope.hide = false;
+    $scope.reset();
+  };
+  
+  $scope.genSeq = function() {
+    if($scope.count < 20) {
+      $scope.count++;
+      $scope.sequence += $scope.colors[Math.floor(Math.random() * ($scope.colors.length))];
+      $scope.showSeq();
+    } else {
+      $scope.won();
+    }
+  };
+  
+  $scope.reset = function() {
+    $scope.sequence = "";
+    $scope.seq = "";
+    $scope.count = 0;
+    $scope.turn = true;
+    $scope.putCount = 0;
+    $scope.flag = false;
+    $scope.strict = false;
+  };
+  
+  $scope.check = function() {
+    if ($scope.sequence.indexOf($scope.seq) == 0) {
+      return true;
+    }
+  };
+  
+  $scope.alert = function() {
+    $scope.Alert = {'border': '12px solid #E53935'};
+    $timeout(function() {
+      $scope.Alert = {'border': '12px solid #424242'};
+    }, 750, 1);
+  }
+  
+  $scope.playSound = function(v) {
+    switch (v) {
+      case 'g': 
+        audio1.play(); 
+        break;
+      case 'r': 
+        audio2.play();
+        break;
+      case 'b':
+        audio3.play();
+        break;
+      case 'y':
+        audio4.play();
+        break;
+     }
+  };
+  
+  $scope.Off = function() {
+    $scope.stat = '';
+    sc++;
+    $timeout(function() {
+      $scope.showSeq();
+    }, 300, 1);
+  };
+  
+  $scope.On = function(col) {
+    $scope.stat = col + 'on';
+    $scope.playSound(col);
+    $timeout(function() {
+      $scope.Off();
+    }, 700, 1);
+  }; 
+  
+  $scope.showSeq = function() {
+    $scope.arr = $scope.sequence.split('');
+    if(sc < $scope.arr.length) {
+      $scope.On($scope.arr[sc]);
+    } else {
+      sc = 0;
+      $scope.turn = true;
+      $scope.putCount = 0;
+    }
+  };
+  
+  $scope.put = function(c) {
+    if($scope.turn == true) { 
+      if($scope.putCount < $scope.count - 1) {
+        $scope.putCount++;
+        $scope.playSound(c);        
+        $scope.seq += c;
+        if($scope.check() == true) {
+          $scope.turn = true;
+        }
+        else if($scope.strict == false && $scope.flag == false) {
+          $scope.turn = true;
+          $scope.flag = true;
+          $scope.seq = "";
+          $scope.alert();
+          console.log('Try again');
+          $timeout(function() {
+            $scope.showSeq();
+          }, 1000, 1);
+        }
+        else {
+          console.log('You lost');
+          $scope.message = "You've Lost :( \nLet's start a new game!";
+          $scope.hide = false;
+          $scope.reset();
+        }
+      } 
+      else {
+        $scope.playSound(c);
+        $scope.turn = false;
+        $scope.seq += c;
+        $scope.putCount = 0;
+        if($scope.check() == true) {
+          $scope.seq = "";
+          $timeout(function() {
+            $scope.genSeq();
+          }, 750, 1);
+        }
+        else {
+          $scope.turn = true;
+          $scope.seq = "";
+          if($scope.strict == false && $scope.flag == false) {
+            $scope.flag = true;
+            $timeout(function() {
+              $scope.showSeq();
+            }, 1000, 1);
+            $scope.alert();
+            console.log('Try again..');
+          } else {
+            // Lost
+            $scope.message = "You've Lost :( \nLet's start a new game!";
+            $scope.hide = false;
+            $scope.reset();
+          }      
+        }
+      }
+    }
+  };
+  
+  $scope.start = function() {
+    $scope.hide = true;
+    $scope.reset();
+    $timeout(function() {
+      $scope.genSeq();
+    }, 2000, 1); 
+  };
+});
+Raw
+ scripts
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+Raw
+ simon-game.markdown
+Simon Game
+
+A Pen by Mukil Elango on CodePen.
+
+License.
+Raw
+ style.css
+body {
+  background-color: slategray;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.overlay {
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 100%;
+  transition: all .3s ease-in;
+  z-index: 21;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+}
+.overlay md-content {
+  width; 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(120, 144, 156, 0.87);
+  flex-direction: column;
+}
+.overlay h2 {
+  color: #ddd;
+}
+.overlay .md-button {
+  display: block;
+  height: 32px;
+  background: white !important;
+}
+.wrap {
+  display: flex;
+  height: 400px;
+  width: 400px;
+  border: 6px solid #424242;
+  border-radius: 50%;
+}
+.cont {
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 50%;
+}
+.g, .r, .y, .b {
+  box-sizing: border-box;
+  width: 200px; 
+  border: 8px solid #424242;
+  height: 200px;
+  outline: none;
+}
+.g {
+  background-color: #43A047;
+  border-radius: 100% 0 0 0;
+}
+.g:active , .g.gon{
+  background-color: #76FF03;
+}
+.r {
+  background-color: #D32F2F;
+  border-radius: 0 100% 0 0;
+}
+.r:active , .r.ron{
+  background-color: #FF1744;
+}
+.b {
+  background-color: #1976D2;
+  border-radius: 0 0 100% 0;
+}
+.b:active , .b.bon{
+  background-color: #00DCFF;
+}
+.y {
+  background-color: #FBC02D;
+  border-radius: 0 0 0 100%;
+}
+.y:active , .y.yon{
+  background-color: #FFFF00;
+}
+.control {
+  background: white;
+  display: flex;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: calc(50% - 100px);
+  right: calc(50% - 100px);
+  border-radius: 50%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 12px solid #424242;
+  box-sizing: border-box;
+  padding: 16px 2px 12px 2px;
+  user-select: none;
+}
+.cont-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+}
+.md-chips {
+  box-shadow: none !important;
+}
+
+.md-chips md-chip {
+  padding: 4px 12px;
+  box-sizing: content-box;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+@media (max-width: 500px) {
+  .wrap {
+    transform: scale(0.8);
+  }
+}
+@media (max-width: 400px) {
+  .wrap {
+    transform: scale(0.7);
+  }
+}
+</style>
+<link href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" />
+</head>
+<body ng-cloak ng-controller='gameCtrl'>
+  <div class='overlay' ng-hide='hide'>
+    <md-content>
+      <h2 class='md-display-1'>{{ message }}</h2>
+      <md-button ng-click='showOverlay=false; start();'>
+        START
+      </md-button>
+    </md-content>
+  </div>
+  <div class='wrap md-whiteframe-z3'>
+    <div class='control' ng-style='Alert'>
+      <div class='logo' style='font-weight: bolder; font-size: 24px; font-family: Monospace;'>SIMON </div>
+      <div class='cont-box'>
+        <md-checkbox ng-model="strict" aria-label="Strict" style='margin: 0px;'>           <span class='md-caption'>Strict</span>
+          </md-checkbox>
+        
+        <div class='counter'>
+          <md-chips>
+            <md-chip>
+            {{ count }}
+            </md-chip>
+          </md-chips>
+        </div>
+      </div>
+      <md-button class='md-raised md-fab md-mini' ng-click='start()' md-colors="{background: 'grey-A700'}"><i class='material-icons' style='vertical-align: -6px;'>refresh</i></md-button>
+    </div>
+    <div class='cont' >
+      <div class='g' ng-click="put('g')" ng-class='stat'>
+      </div>
+      <div class='r' ng-click="put('r')" ng-class='stat'>
+      </div>
+      <div class='y' ng-click="put('y')" ng-class='stat'>
+      </div>
+      <div class='b' ng-click="put('b')" ng-class='stat'>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+</body>
+</html>
