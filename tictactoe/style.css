@@ -1,0 +1,59 @@
+body {
+  background-color: rgb(121,134,203);
+  font-family: RobotoDraft, sans-serif;
+}
+md-card-content {
+  background-color: rgba(255, 255, 255, 0.67);
+  padding: 0px !important;
+}
+.choose {
+  background: transparent;
+  box-shadow: none;
+}
+.choose .wrap {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  width: 250px;
+  justify-content: space-around;
+}
+.choose .md-fab {
+  background: white;
+  color: grey;
+  font-size: 32px;
+}
+.choose .md-fab:hover {
+  background: rgb(238,238,238) !important;
+}
+.choose span {
+  text-align: center;
+}
+.main md-card {
+  padding: 12px;
+  margin: 4px;
+  background: rgb(238,238,238);
+  border-bottom: solid 2px rgb(238, 238, 238)
+}
+table td {
+  width: 60px;
+  height: 60px;
+  background-color: #7986CB;
+  vertical-align: middle;
+  text-align: center;
+  outline: none;
+}
+table {
+  border-spacing: 4px;
+  font-size: xx-large;
+  color: rgba(255,255,255,0.87);
+  -webkit-user-select: none;
+}
+tbody {
+  display: block;
+  margin: -8px;
+}
+md-toast {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0px !important;
+}
