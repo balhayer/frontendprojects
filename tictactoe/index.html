@@ -1,0 +1,55 @@
+<html>
+  <head>
+  <title>Tic-Tac-Toe</title>
+  <link href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=RobotoDraft:400,500|Material+Icons" rel="stylesheet" />
+<link href='./style.css' rel='stylesheet'/>
+  </head>
+  <body ng-app="TicTacToe" ng-controller='pCtrl' layout='column' layout-align='center center' ng-cloak>
+    <span class='md-display-2' style='color: rgba(255,255,255, 0.87)'>Tic-Tac-Toe</span>
+    <md-card ng-hide='hide' class='choose'>
+      <span class='md-title' style='padding: 8px 0 0 0; color: rgba(255,255,255,0.87); font-family: RobotoDraft, sans-serif;'>
+        Select Player
+      </span>
+      <div class='wrap'>
+      <div ng-click="user = 'X'; hide=true; set()" class='md-button md-fab md-whiteframe-z1'><i class='material-icons'>close</i></div>
+      <div ng-click="user = 'O'; hide=true; set()" class='md-button md-fab md-whiteframe-z1'><i class='material-icons'>panorama_fish_eye</i></div>
+      </div>
+    </md-card>
+    <md-card ng-show='hide' style='background: transparent; box-shadow: none;' class='main'> 
+       <md-card-title>
+         <md-card class="md-raised" ng-disabled='true' ng-class="{'md-whiteframe-z3': turn}">You: {{win.user}}</md-card>
+         <md-card class="md-raised" ng-disabled='true' ng-class="{'md-whiteframe-z3': !turn}">Opp: {{win.com}}</md-card>
+       </md-card-title>
+
+       <md-card-content>
+         <table>
+           <tr>
+             <td ng-click='pMove($event)' class='one'>{{game.one}}</td>
+             <td ng-click='pMove($event)'class='two'>{{game.two}}</td>
+             <td ng-click='pMove($event)' class='three'>{{game.three}}</td>
+           </tr>
+           <tr>
+             <td ng-click='pMove($event)' class='four'>{{game.four}}</td>
+             <td ng-click='pMove($event)' class='five'>{{game.five}}</td>
+             <td ng-click='pMove($event)' class='six'>{{game.six}}</td>
+           </tr>
+           <tr>
+             <td ng-click='pMove($event)' class='seven'>{{game.seven}}</td>
+             <td ng-click='pMove($event)' class='eight'>{{game.eight}}</td>
+             <td ng-click='pMove($event)' class='nine'>{{game.nine}}</td>
+           </tr>
+         </table>
+         </md-card-content>
+       </md-card>
+    <md-button class='md-raised' ng-click='reset()' ng-show='hide'>Reset</md-button>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="./script.js"></script>
+  </body>
+</html>    
