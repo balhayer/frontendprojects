@@ -1,0 +1,45 @@
+.mdl-layout__header,
+.mdl-layout__tab-bar {
+  background-color: #6340A4 !important;
+}
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+}
+#t3 {
+  background-color: #FFEBEE;
+}
+#t1 {
+  background-color: #C8E6C9;
+}
+#t2 {
+  background-color: #F5F5F5;
+}
+.controls {
+  display: block;
+  padding: 16px;
+}
+.mdl-list {
+  max-width: 700px;
+  width: 90%;
+}
+.mdl-chip {
+  padding: 0px 12px 0 0 !important;
+}
+.mdl-chip .material-icons {
+  vertical-align: -6px;
+}
+a {
+  text-decoration: none;
+  color: #1A1E1A;
+}
+
+.mdl-list__item-sub-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 575px;
+}
