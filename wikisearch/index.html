@@ -1,0 +1,89 @@
+
+<html lang="en" ng-app="WikiApp">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style type='text/css'>
+  .main-card {
+  width: 600px ;
+  margin: 10px auto;
+}
+#search{
+  display: none;
+}
+html, body {
+  background-color: #455A64 !important;
+  height: 100%;
+}
+md-list-item {
+  background: white;
+  margin: 8px;
+  border-radius: 2px;
+  padding: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2) , 0 1px 1px 0 rgba(0,0,0,.14) , 0 2px 1px -1px rgba(0,0,0,.12);
+}
+.md-list-item-text {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+  text-decoration: none;
+}
+.md-list-item-text h3 , p {
+  margin: 0px !important;
+  padding: 2px 0;
+}
+p {
+  color: rgba(0,0,0,0.57);
+}
+.container {
+  max-width: 780px;
+  margin: 0px auto;
+}
+md-input-container.md-block {
+  display: inline-block  !important;
+  width: 480px;
+  margin: 16px 0 -8px 0;
+}
+md-chips .md-chips {
+  box-shadow: none !important;
+  opacity: 0.57;
+}
+  </style>
+</head>
+
+<body ng-controller="WikiCtrl" ng-cloak>
+  <div style="height: 25%;"></div>
+  <div class="main-card" style="text-align: center; font-size: 24px; color: rgba(255, 255, 255, 0.87);">
+    <md-card-title layout-align="center">Wikipedia Viewer</md-card-title>
+  </div>
+  <md-card class='main-card'>
+    <md-card-actions layout="row" layout-align="center" ng-hide="showSearch" >
+      <md-button href='https://en.wikipedia.org/wiki/Special:Random' target='_blank'>RANDOM</md-button>
+      <md-button ng-click="showSearch = !showSearch">SEARCH</md-button>
+ 
+    </md-card-actions>
+    <div ng-show="showSearch" style="width: 100%; margin: 0px 8px;" >
+      <form name="sform" id="sf" ng-submit="go()">
+        <md-input-container md-no-float class="md-block">
+          <input ng-model="this.query" placeholder="Enter your query">
+        </md-input-container> 
+        <md-button onclick="angular.element($('#res')).html('')" ng-click="showSearch = !showSearch">BACK</md-button>
+      </form> 
+    </div>
+  </md-card>
+  <div class='container'>
+    <md-list flex id="res">
+      </md-list>
+  </div>
+  <span layout="row" layout-align="center" style="color: rgba(255, 255, 255, 0.56)" > <md-chips>
+    <md-chip><i class="material-icons" style="vertical-align: -3px; font-size: 18px">copyright</i> Mukil Elango</md-chip></md-chips></span>
+  <!--Scripts-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
