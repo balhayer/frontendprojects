@@ -1,0 +1,52 @@
+body {
+  background: #212121;
+  color: #FAFAFA;
+}
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: RobotoDraft, monospace, sans-serif;
+  font-size: 24px;
+}
+.chooser {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 300px;
+  justify-content: space-around;
+  padding-bottom: 32px;
+}
+.material-icons {
+  vertical-align: -6px;
+}
+
+.icon-button {
+  border-radius: 50%;
+}
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4vw 0;
+}
+
+.disp {
+  position: relative;
+  top: -124px;
+  font-size: 36px;
+}
+
+md-progress-circular {
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+md-progress-circular.md-default-theme path, md-progress-circular path {
+  stroke: #FAFAFA !important;
+  stroke-width: 3px !important;
+}
