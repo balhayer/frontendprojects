@@ -1,0 +1,59 @@
+<html>
+
+<head>
+<title>Pomodoro Clock</title>
+<link href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=RobotoDraft:400,500|Material+Icons" rel="stylesheet" />
+<link href="./style.css" rel="stylesheet" />
+</head>
+  <body ng-app="Pomodoro" ng-controller='pCtrl' ng-cloak=''> 
+     <div class='wrap'>
+       <span style="padding-bottom: 32px" class="md-display-2">Pomodoro Clock </span>
+         <div class='chooser' ng-hide="running">
+           <div style='text-align: center'><span class="md-subhead">Break Length</span>
+           <md-button class="md-icon-button" ng-click="updateB('n')"><i class="material-icons">remove</i></md-button>
+           {{ breakLength }}
+           <md-button class= "md-icon-button" ng-click="updateB('p')"><i class="material-icons">add</i></md-button></div>
+           <div style='text-align: center'><span class="md-subhead">Session Length</span>
+           <md-button class="md-icon-button" ng-click="update('n')"><i class="material-icons">remove</i></md-button>
+           {{ sessionLength }}
+           <md-button class= "md-icon-button" ng-click="update('p')"><i class="material-icons">add</i></md-button></div>
+         </div>
+       <div class='timer' ng-show='running'>
+         <md-progress-circular md-mode="determinate" value="{{progress}}"  md-colors="{color: 'grey-300'}" md-diameter='200'></md-progress-circular>
+         <span class="disp">
+         {{ count | Time }}
+         </span>
+         </div>
+       <md-button class="md-fab" ng-click="startTimer()" ng-hide='running'  md-colors="{background: 'grey-50'}">
+         <i class="material-icons">play_arrow</i>
+         </md-button>
+       <span ng-show='running'>
+       <span ng-show='isBreak' class='md-subhead' md-colors="{color: 'red-A200'}">
+         Break
+       </span>
+       <span ng-hide='isBreak' class='md-subhead'>
+         Session
+       </span>
+       </span>
+       <div ng-show='running'>
+        <md-button class="md-fab md-mini" ng-click="reset()"  md-colors="{background: 'grey-50'}"><i class="material-icons">stop</i>
+         </md-button>
+       <md-button class="md-fab" ng-click="pause()" ng-hide='stop'  md-colors="{background: 'grey-50'}"><i class="material-icons">pause</i>
+         </md-button>
+         <md-button class="md-fab" ng-click="start()" ng-show='stop'  md-colors="{background: 'grey-50'}"><i class="material-icons">play_arrow</i>
+         </md-button>
+          <md-button class="md-fab md-mini" ng-click="plusOne()" md-colors="{background: 'grey-50'}"><i class="material-icons">exposure_plus_1</i>
+         </md-button>
+       </div>
+       </div>
+       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="./script.js" ></script>
+  </body>
+</html>  
