@@ -56,7 +56,7 @@ form {
   </style>
 </head>
 
-<body ng-controller="WikiCtrl" ng-cloak>
+<body ng-controller="WikiCtrl" ng-cloak layout-align="center center">
   <h2 class="md-display-1" style="text-align: center; font-size: 24px; color: rgba(255, 255, 255, 0.87);">Wikipedia Viewer</h2>
   <md-card class='main-card'>
     <md-card-actions layout="row" layout-align="center" ng-hide="showSearch" >
@@ -73,11 +73,7 @@ form {
       <md-button class="md-icon-button" onclick="angular.element($('#res')).html('')" ng-click="showSearch = !showSearch"><i class="material-icons">close</i></md-button>
     </div>
   </md-card>
-  <div class='container'>
-    <md-list flex id="res">
-      </md-list>
-  </div>
-  <span layout="row" layout-align="center" style="color: rgba(255, 255, 255, 0.56)" > <md-chips>
+  <span layout="row" layout-align="center" style="color: rgba(255, 255, 255, 0.56); margin-top: 16px;" > <md-chips>
     <md-chip><i class="material-icons" style="vertical-align: -3px; font-size: 18px">copyright</i> Mukil Elango</md-chip></md-chips></span>
   <!--Scripts-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
