@@ -30,7 +30,7 @@
   padding: 0px 12px 0 0 !important;
 }
 .mdl-chip .material-icons {
-  vertical-align: -6px;
+  line-height: 30px !important;
 }
 a {
   text-decoration: none;
