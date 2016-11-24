@@ -49,6 +49,10 @@ md-chips .md-chips {
   box-shadow: none !important;
   opacity: 0.57;
 }
+form {
+  margin: 0px !important;
+}
+    
   </style>
 </head>
 
@@ -68,7 +72,7 @@ md-chips .md-chips {
         <md-input-container md-no-float class="md-block">
           <input ng-model="this.query" placeholder="Enter your query">
         </md-input-container> 
-        <md-button onclick="angular.element($('#res')).html('')" ng-click="showSearch = !showSearch">BACK</md-button>
+        <md-button class="md-icon-button" onclick="angular.element($('#res')).html('')" ng-click="showSearch = !showSearch"><i class="material-icons">close</i></md-button>
       </form> 
     </div>
   </md-card>
