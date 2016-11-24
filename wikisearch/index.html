@@ -6,6 +6,12 @@
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style type='text/css'>
+    body {
+      display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    }
   .main-card {
   width: 600px ;
   margin: 10px auto;
@@ -56,7 +62,7 @@ form {
   </style>
 </head>
 
-<body ng-controller="WikiCtrl" ng-cloak layout-align="center center">
+<body ng-controller="WikiCtrl" ng-cloak>
   <h2 class="md-display-1" style="text-align: center; font-size: 24px; color: rgba(255, 255, 255, 0.87);">Wikipedia Viewer</h2>
   <md-card class='main-card'>
     <md-card-actions layout="row" layout-align="center" ng-hide="showSearch" >
