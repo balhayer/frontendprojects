@@ -1,0 +1,3 @@
+[submodule "gdgchennai"]
+	path = gdgchennai
+	url = https://github.com/mukilane/gdgchennai.git
